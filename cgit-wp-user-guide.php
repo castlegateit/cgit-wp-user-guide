@@ -35,7 +35,7 @@ function cgit_render_user_guide () {
  * Add user guide menu page
  */
 function cgit_add_user_guide () {
-    add_menu_page('User Guide', 'User Guide', 'edit_pages', 'cgit-user-guide', 'cgit_render_user_guide');
+    add_menu_page('User Guide', 'User Guide', 'edit_pages', 'cgit-user-guide', 'cgit_render_user_guide', 'dashicons-editor-help');
 }
 
 add_action('admin_menu', 'cgit_add_user_guide');
