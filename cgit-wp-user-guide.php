@@ -25,7 +25,7 @@ function cgit_get_user_guide($file) {
  * Add default user guide
  *
  * The default user guide can be overwritten by adding a section with the key
- * 'default' with a priority higher than the default value (10).
+ * 'default' with a priority higher than 1.
  */
 function cgit_add_default_user_guide($sections) {
 
