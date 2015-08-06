@@ -36,7 +36,7 @@ function cgit_add_default_user_guide($sections) {
 
 }
 
-add_filter('cgit_user_guide_sections', 'cgit_add_default_user_guide');
+add_filter('cgit_user_guide_sections', 'cgit_add_default_user_guide', 1);
 
 /**
  * Render user guide
@@ -47,16 +47,30 @@ add_filter('cgit_user_guide_sections', 'cgit_add_default_user_guide');
  * The title of the user guide can be edited using the 'cgit_user_guide_title'
  * filter. The HTML that appears between each section can be edited using the
  * 'cgit_user_guide_separator' filter.
+ *
+ * For backwards compatibility, this also checks for a custom user guide in the
+ * theme directory. However, this should no longer be used to edit the guide.
  */
 function cgit_render_user_guide () {
 
+    // Get title and content using filters
     $title = apply_filters('cgit_user_guide_title', 'User Guide');
     $sep = apply_filters('cgit_user_guide_separator', '<hr />');
     $sections = apply_filters('cgit_user_guide_sections', array());
+
+    // Assemble content from filtered array of sections
     $content = implode($sep, $sections);
 
-    echo '<div class="wrap" style="max-width: 60em;"> <h2>' . $title .
-        $content . '</div>';
+    // Backwards compatible theme-based guide
+    $file = get_stylesheet_directory() . '/user-guide.php';
+
+    if (file_exists($file)) {
+        $title = '';
+        $content = cgit_get_user_guide($file);
+    }
+
+    echo '<div class="wrap" style="max-width: 60em;"> <h2>' . $title . '</h2>'
+        . $content . '</div>';
 
 }
 
