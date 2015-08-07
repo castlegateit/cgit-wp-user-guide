@@ -19,6 +19,13 @@ The default user guide is added with the priority 1 (the default priority is 10)
 
 Each section should only contain simple HTML content. The overall page heading is `<h2>`, so the content of each section should not contain any headings larger than `<h3>`.
 
+If you want to add images to your section, use the `<figure>` element:
+
+    <figure>
+        <img src="<?php echo plugin_dir_url(__FILE__); ?>/foo.png" alt="" />
+        <figcaption>An example image caption.</figcaption>
+    </figure>
+
 ## Editing the default content ##
 
 The default user guide content is simply an item in the array of sections with the key `default`. To edit the content, add a filter that alters this item. To overwrite the content, add a filter that replaces the item. To remove the content, add a filter that removes the item. The priority of the filter should be higher than 1 for these changes to be effective.
