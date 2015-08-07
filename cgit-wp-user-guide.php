@@ -22,6 +22,22 @@ function cgit_get_user_guide($file) {
 }
 
 /**
+ * Add additional CSS
+ */
+function cgit_user_guide_styles($hook) {
+
+    if ($hook != 'toplevel_page_cgit-user-guide') {
+        return;
+    }
+
+    $file = plugin_dir_url(__FILE__) . 'css/user-guide.css';
+    wp_enqueue_style('cgit-wp-user-guide', $file);
+
+}
+
+add_action('admin_enqueue_scripts', 'cgit_user_guide_styles');
+
+/**
  * Add default user guide
  *
  * The default user guide can be overwritten by adding a section with the key
@@ -69,7 +85,7 @@ function cgit_render_user_guide () {
         $content = cgit_get_user_guide($file);
     }
 
-    echo '<div class="wrap" style="max-width: 60em;"> <h2>' . $title . '</h2>'
+    echo '<div class="wrap cgit-user-guide"> <h2>' . $title . '</h2>'
         . $content . '</div>';
 
 }
