@@ -118,3 +118,42 @@ pre kbd {
     margin: 0;
     padding: 0;
 }
+
+/* Print */
+
+@media print {
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        page-break-after: avoid;
+    }
+
+    figcaption {
+        page-break-before: avoid;
+    }
+
+    figure,
+    figcaption {
+        page-break-inside: avoid;
+    }
+
+    #adminmenumain,
+    #wpadminbar {
+        display: none;
+    }
+
+    #wpcontent,
+    #wpfooter {
+        margin: 0;
+        padding: 0;
+    }
+
+    html.wp-toolbar {
+        padding-top: 0;
+    }
+
+}
