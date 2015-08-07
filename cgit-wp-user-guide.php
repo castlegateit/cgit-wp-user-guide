@@ -30,8 +30,9 @@ function cgit_user_guide_styles($hook) {
         return;
     }
 
-    $file = plugin_dir_url(__FILE__) . 'css/user-guide.css';
-    wp_enqueue_style('cgit-wp-user-guide', $file);
+    $url = plugin_dir_url(__FILE__);
+    wp_enqueue_style('cgit-wp-user-guide', $url . 'css/user-guide.css');
+    wp_enqueue_script('cgit-wp-user-guide', $url . 'js/user-guide.js');
 
 }
 
