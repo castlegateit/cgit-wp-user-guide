@@ -26,12 +26,13 @@ class UserGuide
      * Constructor
      *
      * Private constructor adds actions to enqueue the plugin CSS and JavaScript
-     * and to add the menu to the admin panel.
+     * and to add the menu to the admin panel. Also adds the default sections.
      */
     private function __construct()
     {
         add_action('admin_enqueue_scripts', array($this, 'enqueueScripts'));
         add_action('admin_menu', array($this, 'add'));
+        add_action('cgit_user_guide_sections', array($this, 'defaults'));
     }
 
     /**
@@ -125,21 +126,21 @@ class UserGuide
         );
     }
 
+    /**
+     * Add default sections
+     *
+     * The default user guide can be overwritten by adding a section with the key
+     * 'default' with a priority higher than 1.
+     */
+    public function defaults($sections) {
+
+        $file = dirname(__FILE__) . '/user-guide.php';
+        $sections['default'] = self::getFile($file);
+
+        return $sections;
+
+    }
+
 }
 
 UserGuide::getInstance();
-
-/**
- * Add default user guide
- *
- * The default user guide can be overwritten by adding a section with the key
- * 'default' with a priority higher than 1.
- */
-add_filter('cgit_user_guide_sections', function($sections) {
-
-    $file = dirname(__FILE__) . '/user-guide.php';
-    $sections['default'] = UserGuide::getFile($file);
-
-    return $sections;
-
-});
