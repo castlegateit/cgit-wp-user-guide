@@ -32,7 +32,7 @@ class UserGuide
     {
         add_action('admin_enqueue_scripts', array($this, 'enqueueScripts'));
         add_action('admin_menu', array($this, 'add'));
-        add_action('cgit_user_guide_sections', array($this, 'defaults'));
+        add_action('cgit_user_guide_sections', array($this, 'defaults'), 1);
     }
 
     /**
