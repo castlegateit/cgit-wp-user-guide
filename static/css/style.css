@@ -4,6 +4,37 @@
     max-width: 60em;
 }
 
+/* Table of contents */
+
+.cgit-user-guide-contents {
+    padding: 0;
+}
+
+.cgit-user-guide-contents li {
+    list-style: none;
+}
+
+/* Empty anchor used for links */
+
+.cgit-user-guide-anchor {
+    position: relative;
+    top: -32px;
+}
+
+/* "Back to top" links */
+
+.cgit-user-guide-back {
+    font-style: italic;
+    margin: 1.5em 0;
+    text-align: right;
+}
+
+/* Sections */
+
+hr {
+    margin: 2em 0;
+}
+
 /* Headings */
 
 h4 {

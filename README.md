@@ -2,22 +2,41 @@
 
 Castlegate IT WP User Guide adds a user guide to the WordPress admin panel. A basic user guide is included in the plugin. This plugin is compatible with the Admin Tweaks plugin and will hide some information in the default guide depending on the settings in that plugin.
 
+## `Cgit\UserGuide` ##
+
+You can edit the user guide using the `Cgit\UserGuide` object. You can access the object directly or use the `cgit_user_guide()` function. The following are equivalent:
+
+    $guide = Cgit\UserGuide::getInstance();
+    $guide = cgit_user_guide();
+
+You can then change some basic settings:
+
+    $guide->toc = false; // do not generate a table of contents
+    $guide->idPrefix = 'foo_'; // prefix for section heading IDs
+    $guide->title = 'User Guide'; // user guide page title
+    $guide->separator = '<hr />'; // user guide section separator
+
 ## Adding sections ##
 
-You can add sections to the guide using the `cgit_user_guide_sections` filter. Functions passed to this filter should have a single argument, which is an array of sections.
+You can add sections to the guide using `$guide->addSection()`, which lets you control the heading, content, and sort order of your section:
 
-    function foo_user_guide($sections) {
-        $sections[] = '<p>User guide section content.</p>';
-        return $sections;
-    }
+    $guide->addSection('unique_key', [
+        'heading' => 'Example section',
+        'content' => 'Full HTML content ...',
+        'order' => 20,
+    ]);
 
-    add_filter('cgit_user_guide_sections', 'foo_user_guide', 20);
+The sort order is optional; the default sort order is 10.
 
-The default user guide is added with the priority 1 (the default priority is 10). You can use priorities to affect the order in which the sections appear in the guide.
+## Removing sections ##
+
+Sections can also be removed:
+
+    $guide->removeSection('unique_key');
 
 ## HTML ##
 
-Each section should only contain simple HTML content. The overall page heading is `<h2>`, so the content of each section should not contain any headings larger than `<h3>`.
+Each section should only contain simple HTML content. The overall page heading is `<h2>` and section headings are `<h3>`, so the content of each section should not contain any headings larger than `<h4>`.
 
 If you want to add images to your section, use the `<figure>` element:
 
@@ -28,10 +47,8 @@ If you want to add images to your section, use the `<figure>` element:
 
 ## Editing the default content ##
 
-The default user guide content is simply an item in the array of sections with the key `default`. To edit the content, add a filter that alters this item. To overwrite the content, add a filter that replaces the item. To remove the content, add a filter that removes the item. The priority of the filter should be higher than 1 for these changes to be effective.
-
-The page title and section separator can be edited using the `cgit_user_guide_title` and `cgit_user_guide_separator` filters respectively.
+The default sections are `dashboard`, `posts`, and `content`. These can be overwritten or removed using the add and remove methods described above.
 
 ## Backwards compatibility ##
 
-Previous versions of this plugin simply checked for the existence of a file called `user-guide.php` in the active theme directory. For compatibility with older sites and themes, the plugin still checks for this file. However, this is no longer the recommended way of editing the user guide.
+Previous versions of this plugin used files within the theme directory or filters to add user guide content. These methods will still work, but are no longer the recommended ways of editing the user guide.

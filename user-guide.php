@@ -1,68 +1,283 @@
-<h3>The Dashboard</h3>
+<?php
 
-<p>The main WordPress admin screen is the Dashboard. At the top of the screen is the admin bar, which contains quick links to the front end of the site and to your user profile. It also includes a &ldquo;New&rdquo; link, which provides a quick way of writing a new post or page.<?php if (!get_option('cgit_admin_hide_toolbar')): ?> The admin bar will also be displayed on the front end of the site while you are logged in.<?php endif; ?></p>
+namespace Cgit;
 
-<p>On the left side of the Dashboard is the main menu, which will contain the following items by default:</p>
+/**
+ * Generate a user guide
+ */
+class UserGuide
+{
+    /**
+     * Reference to the singleton instance of the class
+     */
+    private static $instance;
 
-<ul>
-    <li>Dashboard: the main WordPress admin screen</li>
-    <?php if (!get_option('cgit_admin_hide_menu_posts')): ?><li>Posts: date-based news or blog posts, with optional categories and tags</li><?php endif; ?>
-    <?php if (!get_option('cgit_admin_hide_menu_media')): ?><li>Media: images and other files uploaded to the website</li><?php endif; ?>
-    <?php if (!get_option('cgit_admin_hide_menu_pages')): ?><li>Pages: static content pages</li><?php endif; ?>
-    <?php if (!get_option('cgit_admin_hide_menu_comments')): ?><li>Comments: comments submitted to posts and pages</li><?php endif; ?>
-</ul>
+    /**
+     * Sections
+     *
+     * Each section should consist of an array, with keys for heading, content,
+     * and order.
+     */
+    private $sections = [];
 
-<figure>
-    <img src="<?php echo plugin_dir_url(__FILE__); ?>images/dashboard.png" alt="" />
-    <figcaption>A typical WordPress Dashboard, showing the admin bar at the top and the main menu on the left.</figcaption>
-</figure>
+    /**
+     * Generate table of contents?
+     */
+    public $toc = true;
 
-<p>A customized WordPress installation may add others items to this list for other types of content more relevant to your site. When you click on these items, you might see a sub-menu. For example, the Posts menu can contain sub-menu items for Categories and Tags.</p>
+    /**
+     * Default order
+     */
+    private $defaultOrder = 10;
 
-<h3>Posts and Pages</h3>
+    /**
+     * ID attribute prefix
+     */
+    public $idPrefix = 'cgit_user_guide_section_';
 
-<p>By default, WordPress supports posts and pages. Posts are news or blog articles, displayed in date order on the front end of your website. They may also be accessed by date-, category-, or tag-based archives. Pages represent static content. Pages can be organized into a simple nested structure, so that one &ldquo;parent&rdquo; page can contain one or more &ldquo;child&rdquo; pages.</p>
+    /**
+     * Page title
+     */
+    public $title = 'User Guide';
 
-<p>Clicking on Posts or Pages in the main menu will display of list of entries, with some basic information about each one. From here, clicking on individual post or page titles will open the edit screen. You can also click on &ldquo;Add New&rdquo; at the top of the list to write a new post or page, also using the edit screen.</p>
+    /**
+     * Section separator
+     */
+    public $separator = '<hr />';
 
-<figure>
-    <img src="<?php echo plugin_dir_url(__FILE__);?>images/pages.png" alt="" />
-    <figcaption>The full list of pages. Click &ldquo;Add New&rdquo; to add a new page. Click on the page title to edit that page.</figcaption>
-</figure>
+    /**
+     * Constructor
+     *
+     * Private constructor ...
+     */
+    private function __construct()
+    {
+        add_action('admin_enqueue_scripts', [$this, 'enqueueScripts']);
+        add_action('admin_menu', [$this, 'addMenu']);
+    }
 
-<h3>Editing Content</h3>
+    /**
+     * Return the singleton instance of the class
+     */
+    public static function getInstance()
+    {
+        if (!isset(self::$instance)) {
+            self::$instance = new self;
+        }
 
-<p>Adding new posts or pages, or editing existing ones, is done using the edit screen. At the top of the screen is a large text field for the post title. Below that is the permalink, the URL for the post. You should not change the permalink after a post has been published: you will break incoming links from other sites and search engines.</p>
+        return self::$instance;
+    }
 
-<h4>Content Editor</h4>
+    /**
+     * Add user guide
+     */
+    public function addMenu()
+    {
+        add_menu_page(
+            'User Guide',
+            'User Guide',
+            'edit_pages',
+            'cgit-user-guide',
+            [$this, 'render'],
+            'dashicons-editor-help'
+        );
+    }
 
-<p>Below the title and permalink is the main content editor. This has a basic WYSIWYG interface that lets you mark text as bold or italic, enter bullet and numbered lists, and mark text as a heading. Please take care to use headings as headings, rather than using bold or other &ldquo;presentational&rdquo; formatting. Using the correct markup for a page makes your content more readable to Google and other search engines.</p>
+    /**
+     * Render user guide
+     */
+    public function render()
+    {
+        // Filter sections for legacy support
+        $this->sections = apply_filters(
+            'cgit_legacy_user_guide_sections',
+            $this->sections
+        );
 
-<p>The button on the right of the content editor toolbar is labelled &ldquo;Toolbar Toggle&rdquo;. Use this to show more content formatting options. This also reveals a &ldquo;Paste as text&rdquo; button that allows you to paste formatted content from another application while stripping out any styles that would affect its appearance on your website. It is strongly recommended that you use this when pasting from a word processor, such as Microsoft Word.</p>
+        // Check sections have required keys and sort
+        $this->sanitize();
+        $this->sort();
 
-<figure>
-    <img src="<?php echo plugin_dir_url(__FILE__); ?>images/editor.png" alt="" />
-    <figcaption>The content editor, showing the default toolbar.</figcaption>
-</figure>
+        // Sections as compiled HTML
+        $sections = [];
 
-<p>Note that the content editor is not a word processor; it is a means of preparing HTML content for your website. The styles and formatting are controlled by a site-wide stylesheet and the content may be filtered before it is displayed on the front-end of the site. Do not attempt to use the content editor to style the content or to add white space to affect the layout—let the website do that for you!</p>
+        // Table of contents
+        if ($this->toc) {
+            $sections[] = $this->getToc();
+        }
 
-<h4>Categories and Tags</h4>
+        foreach (array_keys($this->sections) as $key) {
+            $sections[] = $this->renderSection($key);
+        }
 
-<p>Posts can be organized using categories and/or tags. These appear on the right side of the edit screen. Categories are required, so any posts that are not assigned to a category will be placed in the &ldquo;Uncategorized&rdquo; category. Tags are entirely optional.</p>
+        // Return sections as a single string, separated by $this->separator
+        $guide = '<div class="wrap cgit-user-guide">' . '<h2>' . $this->title
+            . '</h2>' . implode($this->separator, $sections) . '</div>';
 
-<figure>
-    <img src="<?php echo plugin_dir_url(__FILE__); ?>images/taxonomies.png" alt="" />
-    <figcaption>Categories and tags. All posts must be assigned to at least one category. Tags are entirely optional.</figcaption>
-</figure>
+        // Filter guide for legacy support
+        $guide = apply_filters('cgit_legacy_user_guide', $guide);
 
-<h4>Page Attributes</h4>
+        // Print guide
+        echo $guide;
+    }
 
-<p>The &ldquo;Page Attributes&rdquo; box on the right side of the edit screen lets you organize your pages. A page can act as a &ldquo;parent&rdquo; page, containing one or more &ldquo;child&rdquo; pages. Use the &ldquo;Parent&rdquo; dropdown in the Page Attributes box to assign the current page to a parent.</p>
+    /**
+     * Render section content
+     */
+    private function renderSection($key)
+    {
+        $section = $this->sections[$key];
+        $heading = $section['heading'];
+        $content = $section['content'];
+        $id = $this->sectionId($key);
+        $before = '<h3 id="' . $id . '">' . $heading . '</h3>';
 
-<p>The Page Attributes box also includes a field for &ldquo;Order&rdquo;, which lets you specify the menu order of the pages. Lower numbered pages will appear at the top of menus; higher numbered pages will appear lower. This will not have an effect if you are using a custom menu, or if your theme generates a menu using a non-standard method.</p>
+        if (!$heading) {
+            $before = '<span id="' . $id . '"></span>';
+        }
 
-<figure>
-    <img src="<?php echo plugin_dir_url(__FILE__); ?>images/attributes.png" alt="" />
-    <figcaption>Page attributes, showing the Order field.</figcaption>
-</figure>
+        $after = '<p class="cgit-user-guide-back">'
+                . '<a href="#">Back to top</a></p>';
+
+        return $before . $content . $after;
+    }
+
+    /**
+     * Get section iD
+     */
+    private function sectionId($key)
+    {
+        return $this->idPrefix . $key;
+    }
+
+    /**
+     * Assemble table of contents
+     */
+    private function getToc()
+    {
+        $toc = '<h3>Contents</h3>' . '<ul class="cgit-user-guide-contents">';
+
+        foreach ($this->sections as $key => $section) {
+            if ($section['heading']) {
+                $toc .= '<li><a href="#' . $this->sectionId($key) . '">'
+                    . $section['heading'] . '</a></li>';
+            }
+        }
+
+        $toc .= '</ul>';
+
+        return $toc;
+    }
+
+    /**
+     * Enqueue scripts
+     */
+    public function enqueueScripts($hook)
+    {
+        if ($hook != 'toplevel_page_cgit-user-guide') {
+            return;
+        }
+
+        $url = plugin_dir_url(__FILE__);
+        $css = $url . '/static/css/style.css';
+        $js = $url .'/static/js/common.js';
+        $name ='cgit-wp-user-guide';
+
+        wp_enqueue_style($name, $css);
+        wp_enqueue_script($name, $js);
+    }
+
+    /**
+     * Add section
+     *
+     * Expects $options to be an array with keys for heading, content, and
+     * order, which will be appended to the array of sections. If a string is
+     * supplied, it assumes that this is the section content.
+     */
+    public function addSection($key, $options)
+    {
+        if (is_string($options)) {
+            $options = [
+                'content' => $options
+            ];
+        }
+
+        $this->sections[$key] = $options;
+    }
+
+    /**
+     * Remove section
+     */
+    public function removeSection($key)
+    {
+        unset($this->sections[$key]);
+    }
+
+    /**
+     * Sort sections
+     */
+    private function sort()
+    {
+        uasort($this->sections, function($a, $b) {
+            return $a['order'] < $b['order'] ? -1 : 1;
+        });
+    }
+
+    /**
+     * Fix missing keys
+     */
+    private function sanitize()
+    {
+        foreach ($this->sections as $key => $section) {
+
+            // If there is no content, remove the section
+            if (!isset($section['content'])) {
+                unset($this->sections[$key]);
+            }
+
+            // If there is no heading, try to find one in the content
+            if (!isset($section['heading'])) {
+                $heading = $this->getHeading($key);
+                $this->sections[$key]['heading'] = $heading;
+            }
+
+            // If there is no order, use the default value
+            if (!isset($section['order'])) {
+                $this->sections[$key]['order'] = $this->defaultOrder;
+            }
+        }
+    }
+
+    /**
+     * Find heading in content
+     *
+     * If the content contains a heading, it is removed from the content so it
+     * is not duplicated in the output.
+     */
+    private function getHeading($key)
+    {
+        $content = $this->sections[$key]['content'];
+        $pattern = '/<(h[1-6])[^>]*>(.+?)<\/\1>/i';
+        $match = preg_match($pattern, $content, $matches);
+
+        if (isset($matches[2]) && $matches[2]) {
+            $this->sections[$key]['content'] = preg_replace($pattern, '', $content);
+            return strip_tags($matches[2]);
+        }
+
+        return false;
+    }
+
+    /**
+     * Get compiled file output
+     *
+     * Return the output of a PHP file as a string. This allows a section of the
+     * user guide to include some dynamic content.
+     */
+    public static function getFile($file)
+    {
+        ob_start();
+        include $file;
+        return ob_get_clean();
+    }
+}
