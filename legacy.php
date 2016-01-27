@@ -4,15 +4,29 @@
  * Old sites
  *
  * Previous versions of the user guide plugin used filters to add and sort user
- * guide sections.
+ * guide sections. These sections did not have headings.
  */
 add_filter('cgit_legacy_user_guide_sections', function($sections) {
-    $legacy_sections = apply_filters('cgit_user_guide_sections', []);
+    global $wp_filter;
 
-    foreach ($legacy_sections as $key => $content) {
-        $sections[$key] = [
-            'content' => $content
-        ];
+    // We want to preserve the order of the sections, which was set using the
+    // filter priority in previous versions. Therefore, we cannot simply use
+    // apply_filters() here.
+    $filter_name = 'cgit_user_guide_sections';
+    $filters = $wp_filter[$filter_name];
+
+    foreach ($filters as $priority => $filter) {
+        foreach ($filter as $item) {
+            $function = $item['function'];
+            $legacy_sections = $function([]);
+
+            foreach ($legacy_sections as $key => $content) {
+                $sections[$key] = [
+                    'content' => $content,
+                    'order' => $priority,
+                ];
+            }
+        }
     }
 
     return $sections;
