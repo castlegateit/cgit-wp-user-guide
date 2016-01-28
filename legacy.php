@@ -13,7 +13,7 @@ add_filter('cgit_legacy_user_guide_sections', function($sections) {
     // filter priority in previous versions. Therefore, we cannot simply use
     // apply_filters() here.
     $filter_name = 'cgit_user_guide_sections';
-    $filters = $wp_filter[$filter_name];
+    $filters = isset($wp_filter[$filter_name]) ? $wp_filter[$filter_name] : [];
 
     foreach ($filters as $priority => $filter) {
         foreach ($filter as $item) {
