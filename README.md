@@ -4,10 +4,13 @@ Castlegate IT WP User Guide adds a user guide to the WordPress admin panel. A ba
 
 ## `Cgit\UserGuide` ##
 
-You can edit the user guide using the `Cgit\UserGuide` object. You can access the object directly or use the `cgit_user_guide()` function. The following are equivalent:
+You can edit the user guide using the `Cgit\UserGuide` object. You can access the object directly or use the `cgit_user_guide()` function. Note that your code should be executed _after_ the user guide plugin, so it is recommended that you use the `plugins_loaded` action with a priority higher than 10. The following are equivalent:
 
-    $guide = Cgit\UserGuide::getInstance();
-    $guide = cgit_user_guide();
+    add_action('plugins_loaded', function() {
+        $guide = Cgit\UserGuide::getInstance();
+        $guide = cgit_user_guide();
+        // ...
+    }, 20);
 
 You can then change some basic settings:
 
