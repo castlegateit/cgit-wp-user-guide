@@ -90,7 +90,7 @@ class UserGuide
     {
         // Filter sections for legacy support
         $this->sections = apply_filters(
-            'cgit_legacy_user_guide_sections',
+            'cgit_user_guide_sections',
             $this->sections
         );
 
@@ -115,7 +115,7 @@ class UserGuide
             . '</h2>' . implode($this->separator, $sections) . '</div>';
 
         // Filter guide for legacy support
-        $guide = apply_filters('cgit_legacy_user_guide', $guide);
+        $guide = apply_filters('cgit_user_guide', $guide);
 
         // Print guide
         echo $guide;
@@ -143,7 +143,7 @@ class UserGuide
     }
 
     /**
-     * Get section iD
+     * Get section ID
      */
     private function sectionId($key)
     {
@@ -188,32 +188,6 @@ class UserGuide
     }
 
     /**
-     * Add section
-     *
-     * Expects $options to be an array with keys for heading, content, and
-     * order, which will be appended to the array of sections. If a string is
-     * supplied, it assumes that this is the section content.
-     */
-    public function addSection($key, $options)
-    {
-        if (is_string($options)) {
-            $options = [
-                'content' => $options
-            ];
-        }
-
-        $this->sections[$key] = $options;
-    }
-
-    /**
-     * Remove section
-     */
-    public function removeSection($key)
-    {
-        unset($this->sections[$key]);
-    }
-
-    /**
      * Sort sections
      */
     private function sort()
@@ -224,27 +198,27 @@ class UserGuide
     }
 
     /**
-     * Fix missing keys
+     * Sanitize user guide sections
+     *
+     * Adds missing keys to each section array and converts legacy sections to
+     * the new array format.
      */
     private function sanitize()
     {
         foreach ($this->sections as $key => $section) {
 
-            // If there is no content, remove the section
-            if (!isset($section['content'])) {
-                unset($this->sections[$key]);
+            // Convert legacy strings to the new array format
+            if (is_string($section)) {
+                $section = [
+                    'content' => $section,
+                ];
             }
 
-            // If there is no heading, try to find one in the content
-            if (!isset($section['heading'])) {
-                $heading = $this->getHeading($key);
-                $this->sections[$key]['heading'] = $heading;
-            }
+            // Fix missing heading and order values
+            $section = $this->setHeading($section);
+            $section = $this->setOrder($section, $key);
 
-            // If there is no order, use the default value
-            if (!isset($section['order'])) {
-                $this->sections[$key]['order'] = $this->defaultOrder;
-            }
+            $this->sections[$key] = $section;
         }
     }
 
@@ -254,18 +228,60 @@ class UserGuide
      * If the content contains a heading, it is removed from the content so it
      * is not duplicated in the output.
      */
-    private function getHeading($key)
+    private function setHeading($section)
     {
-        $content = $this->sections[$key]['content'];
+        if (isset($section['heading'])) {
+            return $section;
+        }
+
+        $section['heading'] = '';
+        $content = $section['content'];
         $pattern = '/<(h[1-6])[^>]*>(.+?)<\/\1>/i';
         $match = preg_match($pattern, $content, $matches);
 
         if (isset($matches[2]) && $matches[2]) {
-            $this->sections[$key]['content'] = preg_replace($pattern, '', $content);
-            return strip_tags($matches[2]);
+            $section['content'] = preg_replace($pattern, '', $content);
+            $section['heading'] = strip_tags($matches[2]);
         }
 
-        return false;
+        return $section;
+    }
+
+    /**
+     * Set sort order
+     *
+     * If no order is available, attempt to sort by filter priority. If that is
+     * not available, use the default value.
+     */
+    private function setOrder($section, $key)
+    {
+        if (isset($section['order'])) {
+            return $section;
+        }
+
+        global $wp_filter;
+
+        $section['order'] = $this->defaultOrder;
+        $name = 'cgit_user_guide_sections';
+        $filters = isset($wp_filter[$name]) ? $wp_filter[$name] : [];
+        $data = [];
+
+        foreach ($filters as $priority => $filter) {
+            foreach ($filter as $item) {
+                $function = $item['function'];
+                $entries = array_keys($function([]));
+
+                foreach ($entries as $entry) {
+                    $data[$entry] = $priority;
+                }
+            }
+        }
+
+        if (array_key_exists($key, $data)) {
+            $section['order'] = $data[$key];
+        }
+
+        return $section;
     }
 
     /**

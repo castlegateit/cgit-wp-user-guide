@@ -2,40 +2,19 @@
 
 Castlegate IT WP User Guide adds a user guide to the WordPress admin panel. A basic user guide is included in the plugin. This plugin is compatible with the Admin Tweaks plugin and will hide some information in the default guide depending on the settings in that plugin.
 
-## `Cgit\UserGuide` ##
-
-You can edit the user guide using the `Cgit\UserGuide` object. You can access the object directly or use the `cgit_user_guide()` function. Note that your code should be executed _after_ the user guide plugin, so it is recommended that you use the `plugins_loaded` action with a priority higher than 10. The following are equivalent:
-
-    add_action('plugins_loaded', function() {
-        $guide = Cgit\UserGuide::getInstance();
-        $guide = cgit_user_guide();
-        // ...
-    }, 20);
-
-You can then change some basic settings:
-
-    $guide->toc = false; // do not generate a table of contents
-    $guide->idPrefix = 'foo_'; // prefix for section heading IDs
-    $guide->title = 'User Guide'; // user guide page title
-    $guide->separator = '<hr />'; // user guide section separator
-
 ## Adding sections ##
 
-You can add sections to the guide using `$guide->addSection()`, which lets you control the heading, content, and sort order of your section:
+You can add sections to the guide using the `cgit_user_guide_sections` filter. Functions passed to this filter should have a single argument, which is an array of sections.
 
-    $guide->addSection('unique_key', [
-        'heading' => 'Example section',
-        'content' => 'Full HTML content ...',
-        'order' => 20,
-    ]);
+    add_filter('cgit_user_guide_sections', function($sections)) {
+        $sections['unique_key'] = [
+            'heading' => 'Section heading',
+            'content' => 'Full HTML content ...',
+            'order' => 20,
+        ];
+    });
 
 The sort order is optional; the default sort order is 10.
-
-## Removing sections ##
-
-Sections can also be removed:
-
-    $guide->removeSection('unique_key');
 
 ## HTML ##
 
@@ -50,8 +29,8 @@ If you want to add images to your section, use the `<figure>` element:
 
 ## Editing the default content ##
 
-The default sections are `dashboard`, `posts`, and `content`. These can be overwritten or removed using the add and remove methods described above.
+The default sections are `dashboard`, `posts`, and `content`. These can be overwritten or removed using the filter described above.
 
 ## Backwards compatibility ##
 
-Previous versions of this plugin used files within the theme directory or filters to add user guide content. These methods will still work, but are no longer the recommended ways of editing the user guide.
+Previous versions of this plugin used files within the theme directory to add user guide content. This methods will still work, but it is no longer the recommended way of editing the user guide.
