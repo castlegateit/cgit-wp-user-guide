@@ -12,6 +12,8 @@ You can add sections to the guide using the `cgit_user_guide_sections` filter. F
             'content' => 'Full HTML content ...',
             'order' => 20,
         ];
+
+        return $sections;
     });
 
 The sort order is optional; the default sort order is 10.
