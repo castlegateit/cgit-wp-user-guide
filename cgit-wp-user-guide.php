@@ -12,13 +12,18 @@ License: MIT
 
 */
 
+require __DIR__ . '/src/autoload.php';
+
+define('CGIT_USER_GUIDE_PLUGIN_URL', plugin_dir_url(__FILE__));
+
+/**
+ * Load plugin
+ */
 add_action('plugins_loaded', function() {
-    define('CGIT_USER_GUIDE_PLUGIN_URL', plugin_dir_url(__FILE__));
+    require __DIR__ . '/functions.php';
+    require __DIR__ . '/default-sections.php';
+    require __DIR__ . '/legacy.php';
 
-    include dirname(__FILE__) . '/user-guide.php';
-    include dirname(__FILE__) . '/functions.php';
-    include dirname(__FILE__) . '/default-sections.php';
-    include dirname(__FILE__) . '/legacy.php';
-
+    // Initialization
     Cgit\UserGuide::getInstance();
 });
