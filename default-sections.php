@@ -25,4 +25,4 @@ add_filter('cgit_user_guide_sections', function($sections) {
     ];
 
     return $sections;
-});
+}, 5);

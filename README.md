@@ -31,7 +31,12 @@ If you want to add images to your section, use the `<figure>` element:
 
 ## Editing the default content ##
 
-The default sections are `dashboard`, `posts`, and `content`. These can be overwritten or removed using the filter described above.
+The default sections are `dashboard`, `posts`, and `content`. These can be overwritten or removed using the filter described above. The default user guide sections are added with a priority of 5, so you may need to set a higher priority for the filter when you are overwriting sections:
+
+    add_filter('cgit_user_guide_sections', function($sections) {
+        $sections['dashboard'] = [ ... ];
+        return $sections;
+    }, 20); // priority 20
 
 ## Backwards compatibility ##
 
