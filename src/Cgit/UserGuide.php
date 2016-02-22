@@ -178,9 +178,8 @@ class UserGuide
             return;
         }
 
-        $url = plugin_dir_url(__FILE__);
-        $css = $url . '/static/css/style.css';
-        $js = $url .'/static/js/common.js';
+        $css = CGIT_USER_GUIDE_PLUGIN_URL . '/static/css/style.css';
+        $js = CGIT_USER_GUIDE_PLUGIN_URL .'/static/js/common.js';
         $name ='cgit-wp-user-guide';
 
         wp_enqueue_style($name, $css);
