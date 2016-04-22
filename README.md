@@ -6,15 +6,17 @@ Castlegate IT WP User Guide adds a user guide to the WordPress admin panel. A ba
 
 You can add sections to the guide using the `cgit_user_guide_sections` filter. Functions passed to this filter should have a single argument, which is an array of sections.
 
-    add_filter('cgit_user_guide_sections', function($sections) {
-        $sections['unique_key'] = [
-            'heading' => 'Section heading',
-            'content' => 'Full HTML content ...',
-            'order' => 20,
-        ];
+~~~ php
+add_filter('cgit_user_guide_sections', function($sections) {
+    $sections['unique_key'] = [
+        'heading' => 'Section heading',
+        'content' => 'Full HTML content ...',
+        'order' => 20,
+    ];
 
-        return $sections;
-    });
+    return $sections;
+});
+~~~
 
 The sort order is optional; the default sort order is 10.
 
@@ -24,19 +26,23 @@ Each section should only contain simple HTML content. The overall page heading i
 
 If you want to add images to your section, use the `<figure>` element:
 
-    <figure>
-        <img src="<?php echo plugin_dir_url(__FILE__); ?>/foo.png" alt="" />
-        <figcaption>An example image caption.</figcaption>
-    </figure>
+~~~ php
+<figure>
+    <img src="<?= $dir ?>/foo.png" alt="" />
+    <figcaption>An example image caption.</figcaption>
+</figure>
+~~~
 
 ## Editing the default content ##
 
 The default sections are `dashboard`, `posts`, and `content`. These can be overwritten or removed using the filter described above. The default user guide sections are added with a priority of 5, so you may need to set a higher priority for the filter when you are overwriting sections:
 
-    add_filter('cgit_user_guide_sections', function($sections) {
-        $sections['dashboard'] = [ ... ];
-        return $sections;
-    }, 20); // priority 20
+~~~ php
+add_filter('cgit_user_guide_sections', function($sections) {
+    $sections['dashboard'] = [ ... ];
+    return $sections;
+}, 20); // priority 20
+~~~
 
 ## Backwards compatibility ##
 

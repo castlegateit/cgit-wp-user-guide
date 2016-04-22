@@ -16,12 +16,10 @@ require __DIR__ . '/src/autoload.php';
 
 define('CGIT_USER_GUIDE_PLUGIN_URL', plugin_dir_url(__FILE__));
 
-/**
- * Load plugin
- */
+// Load plugin
 add_action('plugins_loaded', function() {
     require __DIR__ . '/functions.php';
-    require __DIR__ . '/default-sections.php';
+    require __DIR__ . '/defaults.php';
     require __DIR__ . '/legacy.php';
 
     // Initialization
