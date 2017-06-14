@@ -239,7 +239,7 @@ class UserGuide
         $match = preg_match($pattern, $content, $matches);
 
         if (isset($matches[2]) && $matches[2]) {
-            $section['content'] = preg_replace($pattern, '', $content);
+            $section['content'] = preg_replace($pattern, '', $content, 1);
             $section['heading'] = strip_tags($matches[2]);
         }
 
