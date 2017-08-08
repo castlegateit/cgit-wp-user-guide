@@ -4,10 +4,10 @@
 
 <p>Below the title and permalink is the main content editor. This has a basic WYSIWYG interface that lets you mark text as bold or italic, enter bullet and numbered lists, and mark text as a heading. Please take care to use headings as headings, rather than using bold or other &ldquo;presentational&rdquo; formatting. Using the correct markup for a page makes your content more readable to Google and other search engines.</p>
 
-<p>The button on the right of the content editor toolbar is labelled &ldquo;Toolbar Toggle&rdquo;. Use this to show more content formatting options. This also reveals a &ldquo;Paste as text&rdquo; button that allows you to paste formatted content from another application while stripping out any styles that would affect its appearance on your website. It is strongly recommended that you use this when pasting from a word processor, such as Microsoft Word.</p>
+<p>The button on the right of the content editor toolbar is labelled <b>Toolbar Toggle</b>. Use this to show more content formatting options. This also reveals a <b>Paste as text</b> button that allows you to paste formatted content from another application while stripping out any styles that would affect its appearance on your website. It is strongly recommended that you use this when pasting from a word processor, such as Microsoft Word.</p>
 
 <figure>
-    <img src="<?= CGIT_USER_GUIDE_PLUGIN_URL ?>static/images/editor.png" alt="" />
+    <img src="<?= CGIT_USER_GUIDE_PLUGIN_URL ?>images/editor.png" alt="" />
     <figcaption>The content editor, showing the default toolbar.</figcaption>
 </figure>
 
@@ -18,17 +18,17 @@
 <p>Posts can be organized using categories and/or tags. These appear on the right side of the edit screen. Categories are required, so any posts that are not assigned to a category will be placed in the &ldquo;Uncategorized&rdquo; category. Tags are entirely optional.</p>
 
 <figure>
-    <img src="<?= CGIT_USER_GUIDE_PLUGIN_URL ?>static/images/taxonomies.png" alt="" />
+    <img src="<?= CGIT_USER_GUIDE_PLUGIN_URL ?>images/taxonomies.png" alt="" />
     <figcaption>Categories and tags. All posts must be assigned to at least one category. Tags are entirely optional.</figcaption>
 </figure>
 
 <h4>Page Attributes</h4>
 
-<p>The &ldquo;Page Attributes&rdquo; box on the right side of the edit screen lets you organize your pages. A page can act as a &ldquo;parent&rdquo; page, containing one or more &ldquo;child&rdquo; pages. Use the &ldquo;Parent&rdquo; dropdown in the Page Attributes box to assign the current page to a parent.</p>
+<p>The <b>Page Attributes</b> box on the right side of the edit screen lets you organize your pages. A page can act as a &ldquo;parent&rdquo; page, containing one or more &ldquo;child&rdquo; pages. Use the <b>Parent</b> dropdown in the Page Attributes box to assign the current page to a parent.</p>
 
-<p>The Page Attributes box also includes a field for &ldquo;Order&rdquo;, which lets you specify the menu order of the pages. Lower numbered pages will appear at the top of menus; higher numbered pages will appear lower. This will not have an effect if you are using a custom menu, or if your theme generates a menu using a non-standard method.</p>
+<p>The Page Attributes box also includes a field for <b>Order</b>, which lets you specify the menu order of the pages. Lower numbered pages will appear at the top of menus; higher numbered pages will appear lower. This will not have an effect if you are using a custom menu, or if your theme generates a menu using a non-standard method.</p>
 
 <figure>
-    <img src="<?= CGIT_USER_GUIDE_PLUGIN_URL ?>static/images/attributes.png" alt="" />
+    <img src="<?= CGIT_USER_GUIDE_PLUGIN_URL ?>images/attributes.png" alt="" />
     <figcaption>Page attributes, showing the Order field.</figcaption>
 </figure>

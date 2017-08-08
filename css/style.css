@@ -1,0 +1,187 @@
+/** Main content typography */
+
+.cgit-user-guide {
+    line-height: 1.5;
+}
+
+.cgit-user-guide h1,
+.cgit-user-guide h2,
+.cgit-user-guide h3,
+.cgit-user-guide h4,
+.cgit-user-guide h5,
+.cgit-user-guide h6 {
+    margin: 1em 0 0 0;
+}
+
+.cgit-user-guide > h1:first-child,
+.cgit-user-guide > h2:first-child {
+    margin: 0;
+}
+
+.cgit-user-guide h1,
+.cgit-user-guide h2,
+.cgit-user-guide > h1:first-child,
+.cgit-user-guide > h2:first-child {
+    font-size: 2.5em;
+}
+
+.cgit-user-guide h3 {
+    font-size: 2em;
+}
+
+.cgit-user-guide h4 {
+    font-size: 1.5em;
+}
+
+.cgit-user-guide h5 {
+    font-size: 1.25em;
+}
+
+.cgit-user-guide h6 {
+    font-size: 1em;
+}
+
+.cgit-user-guide p {
+    font: inherit;
+    line-height: inherit;
+    margin: 1em 0;
+}
+
+.cgit-user-guide blockquote {
+    margin: 1em 2em;
+}
+
+.cgit-user-guide ol,
+.cgit-user-guide ul {
+    margin: 1em 0;
+    padding: 0 0 0 2em;
+}
+
+.cgit-user-guide ol li {
+    list-style-type: decimal;
+}
+
+.cgit-user-guide ul li {
+    list-style-type: disc;
+}
+
+/** Sections */
+
+.cgit-user-guide .cgit-user-guide-section {
+    border-bottom: 2px solid;
+    margin: 2em 0;
+    padding-bottom: 1.5em;
+}
+
+.cgit-user-guide .cgit-user-guide-section > h2:first-child,
+.cgit-user-guide .cgit-user-guide-section > h3:first-child,
+.cgit-user-guide .cgit-user-guide-section > h4:first-child {
+    margin-top: 0;
+}
+
+/** Back links */
+
+.cgit-user-guide .cgit-user-guide-section .cgit-user-guide-section-back {
+    font-style: italic;
+    margin-top: 2em;
+    text-align: right;
+}
+
+/** Table of contents */
+
+.cgit-user-guide .cgit-user-guide-section.-index ol {
+    padding: 0;
+}
+
+.cgit-user-guide .cgit-user-guide-section.-index li {
+    display: block;
+}
+
+/** Image and figures */
+
+.cgit-user-guide .cgit-user-guide-section img {
+    display: block;
+    height: auto;
+    margin: 1em auto;
+    max-width: calc(100% - 2em);
+    width: auto;
+}
+
+.cgit-user-guide .cgit-user-guide-section figure {
+    border: 2px solid;
+    margin: 2em 0;
+    padding: 0;
+}
+
+.cgit-user-guide .cgit-user-guide-section figcaption {
+    font-size: 0.875rem;
+    font-style: italic;
+    margin-top: 0.5em;
+    padding: 0.5em 1em;
+    text-align: center;
+}
+
+/** Screen styles */
+
+@media screen {
+    .cgit-user-guide {
+        font-size: 16px;
+        margin: 1em 1em 1em 0;
+        max-width: 50em;
+    }
+
+    .cgit-user-guide .cgit-user-guide-section,
+    .cgit-user-guide .cgit-user-guide-section figure {
+        border-color: rgba(0, 0, 0, 0.1);
+    }
+
+    .cgit-user-guide .cgit-user-guide-section figcaption {
+        background: rgba(0, 0, 0, 0.1);
+    }
+}
+
+/** Print styles */
+
+@media print {
+    .cgit-user-guide {
+        font-size: 12pt;
+    }
+
+    .cgit-user-guide h1,
+    .cgit-user-guide h2,
+    .cgit-user-guide h3,
+    .cgit-user-guide h4,
+    .cgit-user-guide h5,
+    .cgit-user-guide h6 {
+        page-break-after: avoid;
+    }
+
+    .cgit-user-guide figcaption {
+        page-break-before: avoid;
+    }
+
+    .cgit-user-guide figure,
+    .cgit-user-guide figcaption {
+        page-break-inside: avoid;
+    }
+
+    .cgit-user-guide .cgit-user-guide-section .cgit-user-guide-section-back {
+        display: none;
+    }
+
+    #adminmenumain,
+    #wpadminbar,
+    #wpfooter {
+        display: none;
+    }
+
+    #wpcontent,
+    #wpfooter {
+        margin: 0;
+        padding: 0;
+    }
+
+    html.wp-toolbar {
+        padding-top: 0;
+    }
+}
