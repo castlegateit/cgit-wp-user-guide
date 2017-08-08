@@ -2,9 +2,13 @@
 
 <h4>Content Editor</h4>
 
-<p>Below the title and permalink is the main content editor. This has a basic WYSIWYG interface that lets you mark text as bold or italic, enter bullet and numbered lists, and mark text as a heading. Please take care to use headings as headings, rather than using bold or other &ldquo;presentational&rdquo; formatting. Using the correct markup for a page makes your content more readable to Google and other search engines.</p>
+<p>Below the title and permalink is the main content editor. This has a basic WYSIWYG interface that lets you mark text as bold or italic, enter bullet and numbered lists, and mark text as a heading. Please take care to use headings as headings, rather than using bold or other &ldquo;presentational&rdquo; formatting. Using the correct markup for a page makes your content more readable to Google and other search engines, as well as helping people with accessibility aids to navigate the content.</p>
 
 <p>The button on the right of the content editor toolbar is labelled <b>Toolbar Toggle</b>. Use this to show more content formatting options. This also reveals a <b>Paste as text</b> button that allows you to paste formatted content from another application while stripping out any styles that would affect its appearance on your website. It is strongly recommended that you use this when pasting from a word processor, such as Microsoft Word.</p>
+
+<p>The chain icon allows you to create links in the content editor. Highlight the text that you would like to link and then click this icon. It brings up a small input into which you can type (or better, paste) any URL, or you can simply start typing the name of any page or post on the site and a list will appear from which you can select a destination for the link.</p>
+
+<p>You can also link to media in your Library from here: you will need to copy the URL from the "Attachment Details" screen in the library.</p>
 
 <figure>
     <img src="<?= CGIT_USER_GUIDE_PLUGIN_URL ?>images/editor.png" alt="" />
@@ -32,3 +36,5 @@
     <img src="<?= CGIT_USER_GUIDE_PLUGIN_URL ?>images/attributes.png" alt="" />
     <figcaption>Page attributes, showing the Order field.</figcaption>
 </figure>
+
+<p>For news posts, the date will be shown on the right hand side in the 'Publish' box. This will automatically be set to the date that the news story was published, but you can change it by clicking 'Edit'. You can also hide content or view past revisions here.</p>
