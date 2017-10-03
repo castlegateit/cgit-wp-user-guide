@@ -14,11 +14,8 @@ class Plugin
      */
     public function __construct()
     {
+        add_action('plugins_loaded', [$this, 'init']);
         add_filter('cgit_user_guide', [$this, 'registerLegacyUserGuide']);
-
-        $defaults = new Defaults();
-        $guide = new Guide();
-        $admin = new Admin($guide);
     }
 
     /**
@@ -42,5 +39,17 @@ class Plugin
         }
 
         return \Cgit\UserGuide\Content::load($path);
+    }
+
+    /**
+     * Initialization
+     *
+     * @return void
+     */
+    public function init()
+    {
+        $defaults = new Defaults;
+        $guide = new Guide;
+        $admin = new Admin($guide);
     }
 }
