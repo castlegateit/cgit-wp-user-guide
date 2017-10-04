@@ -14,7 +14,7 @@ class Plugin
      */
     public function __construct()
     {
-        add_action('plugins_loaded', [$this, 'init']);
+        add_action('init', [$this, 'init']);
         add_filter('cgit_user_guide', [$this, 'registerLegacyUserGuide']);
     }
 
