@@ -1,4 +1,0 @@
-[submodule "lib/parsedown"]
-	path = lib/parsedown
-	url = https://github.com/erusev/parsedown.git
-	branch = master
