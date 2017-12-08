@@ -15,7 +15,7 @@ class Guide
      *
      * @var string
      */
-    private $title = 'User Guide';
+    private $title = 'About';
 
     /**
      * Include a table of contents?
@@ -56,6 +56,7 @@ class Guide
     public function __construct()
     {
         $prefix = 'cgit_user_guide_';
+        $this->title = 'About ' . get_option('blogname');
 
         // Apply filters to default values
         $this->title = apply_filters($prefix . 'page_title', $this->title);

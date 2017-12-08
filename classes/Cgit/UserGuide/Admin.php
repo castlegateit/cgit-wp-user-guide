@@ -23,7 +23,7 @@ class Admin
      *
      * @var string
      */
-    private $title = 'User Guide';
+    private $title = 'About Website';
 
     /**
      * Minimum user capability required to view the menu
@@ -71,6 +71,9 @@ class Admin
         // Assign guide class instance to property
         $this->guide = $guide;
 
+        // Customize menu title
+        $this->title = 'About ' . get_option('blogname');
+
         // Apply filters to default menu page properties
         $this->title = apply_filters($this->prefix . 'title', $this->title);
         $this->cap = apply_filters($this->prefix . 'cap', $this->cap);
@@ -85,12 +88,21 @@ class Admin
      * Register menu
      *
      * Registers the menu page that displays the user guide. This method must be
-     * run on the "admin_menu" action.
+     * run on the "admin_menu" action. If the Video User Manuals plugin is
+     * installed, this becomes a child page of that plugin's menu.
      *
      * @return void
      */
     public function registerMenu()
     {
+        // Add sub-menu to Video User Manuals
+        if (defined('VUM_PLUGIN_DIR')) {
+            return add_submenu_page('video-user-manuals/plugin.php',
+                $this->title, $this->title, $this->cap, $this->name,
+                [$this->guide, 'publish']);
+        }
+
+        // Add top level menu page
         add_menu_page($this->title, $this->title, $this->cap, $this->name,
             [$this->guide, 'publish'], $this->icon);
     }
@@ -105,7 +117,10 @@ class Admin
      */
     public function registerScripts($hook)
     {
-        if ($hook != 'toplevel_page_' . $this->name) {
+        // Restrict the styles to the user guide page, which may be a top level
+        // page or, if Video User Manuals is installed, a sub-page.
+        if ($hook != 'toplevel_page_' . $this->name &&
+            $hook != 'manual_page_' . $this->name) {
             return;
         }
 

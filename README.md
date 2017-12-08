@@ -86,3 +86,7 @@ add_filter('cgit_user_guide_sections', function($sections) {
 ## Backwards compatibility ##
 
 Previous versions of this plugin used files within the theme directory to add user guide content. This methods will still work, but it is no longer the recommended way of editing the user guide and may cease to work in future versions.
+
+## Video User Manuals ##
+
+If the [Video User Manuals](https://www.videousermanuals.com/) plugin is installed, the guide will be added as a sub-page of the __Manual__ menu.
