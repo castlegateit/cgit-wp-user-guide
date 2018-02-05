@@ -65,6 +65,31 @@
     list-style-type: disc;
 }
 
+.cgit-user-guide code,
+.cgit-user-guide kbd,
+.cgit-user-guide pre,
+.cgit-user-guide samp {
+    background-color: rgba(0, 0, 0, 0.05);
+    font-family: monospace, monospace;
+    font-size: 0.875em;
+    margin: 0;
+    padding: 0.25em 0.375em;
+}
+
+.cgit-user-guide pre {
+    margin: 1em 0;
+    padding: 1em;
+    white-space: pre-wrap;
+}
+
+.cgit-user-guide pre code,
+.cgit-user-guide pre kbd,
+.cgit-user-guide pre samp {
+    background-color: transparent;
+    font-size: 1em;
+    padding: 0;
+}
+
 /** Sections */
 
 .cgit-user-guide .cgit-user-guide-section {
