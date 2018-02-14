@@ -5,7 +5,7 @@
 Plugin Name: Castlegate IT WP User Guide
 Plugin URI: https://github.com/castlegateit/cgit-wp-user-guide
 Description: Add a simple WordPress user guide to the admin panel.
-Version: 5.4.1
+Version: 5.4.2
 Author: Castlegate IT
 Author URI: https://www.castlegateit.co.uk/
 License: MIT

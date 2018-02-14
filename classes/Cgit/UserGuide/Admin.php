@@ -23,7 +23,7 @@ class Admin
      *
      * @var string
      */
-    private $title = 'About Website';
+    private $title = 'Site Guide';
 
     /**
      * Minimum user capability required to view the menu
@@ -72,7 +72,7 @@ class Admin
         $this->guide = $guide;
 
         // Customize menu title
-        $this->title = 'About ' . get_option('blogname');
+        $this->title = get_option('blogname') . ' Site Guide';
 
         // Apply filters to default menu page properties
         $this->title = apply_filters($this->prefix . 'title', $this->title);
