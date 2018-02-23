@@ -7,18 +7,20 @@ Castlegate IT WP User Guide adds a user guide to the WordPress admin panel. A ba
 You can add sections to the guide using the `cgit_user_guide_sections` filter. Functions passed to this filter should have a single argument, which is an array of sections.
 
 ~~~ php
-add_filter('cgit_user_guide_sections', function($sections) {
-    $sections['unique_key'] = [
-        'heading' => 'Section heading',
-        'content' => 'Full HTML content ...',
-        'order' => 20,
-    ];
+add_action('init', function () {
+    add_filter('cgit_user_guide_sections', function ($sections) {
+        $sections['unique_key'] = [
+            'heading' => 'Section heading',
+            'content' => 'Full HTML content ...',
+            'order' => 20,
+        ];
 
-    return $sections;
+        return $sections;
+    });
 });
 ~~~
 
-The sort order is optional; the default sort order is 10.
+The sort order is optional; the default sort order is 10. Note that the user guide is assembled during the `init` action with priority `20`, so you must run this filter with a higher priority or during an earlier action for it to take effect.
 
 ## HTML ##
 
