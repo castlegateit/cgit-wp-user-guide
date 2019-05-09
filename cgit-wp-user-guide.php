@@ -8,7 +8,7 @@ Description: Add a simple WordPress user guide to the admin panel.
 Version: 5.4.3
 Author: Castlegate IT
 Author URI: https://www.castlegateit.co.uk/
-License: MIT
+License: AGPL
 
 */
 
